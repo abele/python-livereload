@@ -126,8 +126,12 @@ class IndexHandler(RequestHandler):
         if abspath.endswith('/'):
             filepath = os.path.join(abspath, 'index.html')
             if not os.path.exists(filepath):
-                self.create_index(abspath)
-                return
+                if os.path.exists(abspath):
+                    self.create_index(abspath)
+                    return
+                else:
+                    abspath = os.path.abspath('.')
+                    filepath = os.path.join(abspath, 'index.html')
         elif not os.path.exists(abspath):
             filepath = abspath + '.html'
 
